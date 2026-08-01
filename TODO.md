@@ -12,11 +12,11 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 |------|--------|
 | `internal/infra/config` | Done — `Load()` / `AI_BASE_URL` / `AI_API_KEY` |
 | `cmd/main` | Done — inline OpenRouter Responses one-shot (“Anybody home?”) |
-| `docs/architecture.md` | Done — Agent ≈ model + harness; package split |
-| `internal/ai` | Empty stub (`package ai` only) — no Provider / Message / Response |
+| `docs/architecture.md` | Done — Agent ≈ model + harness; package split (`model` / `agent` / `skill` / `tools`) |
+| `internal/model` | Types in: `Model.Prompt`, `Message`, flat `Response`, roles; `ToolCalls` still `[]any`; no OpenAI impl yet |
 | `internal/agent` | Empty stub (`package agent` only) — no loop |
 | `internal/tools` / `internal/skill` | Do not exist |
-| OpenAI provider package | Does not exist — client lives in `main` |
+| OpenAI provider | Does not exist — client lives in `main` |
 
 Working tree clean on `main` @ `4b23b0b` (TODO board) + `894e87b` (round-trip prototype).
 
@@ -32,15 +32,15 @@ Working tree clean on `main` @ `4b23b0b` (TODO board) + `894e87b` (round-trip pr
 
 ### Task 2 — Architecture mental model
 
-- **Description:** Document Agent ≈ model + harness; package split `ai` / `agent` / `skill` / `tools` in `docs/architecture.md`.
+- **Description:** Document Agent ≈ model + harness; package split `model` / `agent` / `skill` / `tools` in `docs/architecture.md`.
 - **Priority:** P1
 - **Done:** [x]
 
-### Task 3 — `ai` types + Provider interface
+### Task 3 — `model` types + Provider interface
 
-- **Description:** `Provider.Prompt(ctx, messages, model) (Response, error)` with `Message` / `Response` / roles (incl. room for tools later). Packages exist as empty stubs only — types not written yet. Plan for ReAct: “has tool calls?” not `IsFinal`.
+- **Description:** In `internal/model`: `Model.Prompt([]Message) (Response, error)` with flat `Response` (`Content` + `ToolCalls` stub), roles (user/assistant/system/tool). Agent maps response → history `Message`. Plan for ReAct: “has tool calls?” not `IsFinal`.
 - **Priority:** P0
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 4 — Agent loop (ReAct harness)
 
@@ -54,7 +54,7 @@ Working tree clean on `main` @ `4b23b0b` (TODO board) + `894e87b` (round-trip pr
 
 ### Task 5 — Finish OpenAI provider (text path)
 
-- **Description:** `NewOpenAIProvider` owns the client; map `[]Message` → Responses input; `Prompt` returns a real text `Response`. Prove via `ai.Provider`, not inline in `main`.
+- **Description:** `NewOpenAIProvider` owns the client; map `[]Message` → Responses input; `Prompt` returns a real text `Response`. Prove via `model.Provider`, not inline in `main`.
 - **Priority:** P0
 - **Done:** [ ]
 

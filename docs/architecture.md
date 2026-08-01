@@ -24,7 +24,7 @@
 
 | Package | Owns | Does not own |
 |---------|------|----------------|
-| `internal/ai` | Model I/O (messages in → assistant turn out) | Loop, skills, tools |
+| `internal/model` | Model I/O (messages in → assistant turn out) | Loop, skills, tools |
 | `internal/agent` | Loop, stop rules, what goes into each turn; wires the harness | Tool implementations, skill file parsing |
 | `internal/skill` | Discover / load / select `SKILL.md` (and related assets) | Calling the model, running tools |
 | `internal/tools` | Register + execute tools (schemas, handlers) | Prompt assembly, skill matching |
@@ -32,10 +32,10 @@
 ### Dependency direction
 
 ```
-agent → ai, skill, tools
+agent → model, skill, tools
 skill ↛ tools   (skills may name tools in markdown; Go code should not import tools)
 tools ↛ skill
-ai    ↛ agent / skill / tools
+model ↛ agent / skill / tools
 ```
 
 If `skill` starts importing `tools`, playbook text and runtime registry are probably mixed.
@@ -45,7 +45,7 @@ If `skill` starts importing `tools`, playbook text and runtime registry are prob
 - **`tools`**: one tool, invoke it, get a result.
 - **`skill`**: load one `SKILL.md` into something the agent can put in context.
 - **`agent`**: one loop turn that uses both.
-- **`ai`**: reliable chat completion boundary (tool calls when needed).
+- **`model`**: reliable chat completion boundary (tool calls when needed).
 
 ---
 

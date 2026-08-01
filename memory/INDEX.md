@@ -4,6 +4,7 @@ One-line pointers for future sessions. Newest first.
 
 | Date | Milestone |
 |------|-----------|
+| 2026-08-02 | Review fixes landed (panic on nil model, `>=` budget, config validation); Task 7 deferred fresh; `CLAUDE.md` now imports the pairing contract |
 | 2026-08-02 | Tasks 5 + 6 done: thin main returned a live OpenRouter response through provider → agent |
 | 2026-08-02 | Provider implemented + conversion-tested; live Task 6 smoke next, `httptest.Server` contract test deferred to extras |
 | 2026-08-01 | TODO reconciled: Task 4 done, current `model.Model` signature/name captured; next = Task 5 |

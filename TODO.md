@@ -6,7 +6,19 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 
 **Stop rule:** no tool calls ⇒ that assistant text is the answer. No structured `is_final`. No Submit/Prompt control tools for v1.
 
-**Codebase scan (2026-08-01, updated):** foundations + `ai` types exist (`IsFinal` still on `Response` — to drop/replace). Agent loop still branches on `IsFinal`. OpenAI provider is a stub. `cmd/main` still one-shots Responses inline. No `internal/tools` / `internal/skill` packages yet.
+**Codebase scan (2026-08-01):** Back to **full round-trip** checkpoint.
+
+| Area | State |
+|------|--------|
+| `internal/infra/config` | Done — `Load()` / `AI_BASE_URL` / `AI_API_KEY` |
+| `cmd/main` | Done — inline OpenRouter Responses one-shot (“Anybody home?”) |
+| `docs/architecture.md` | Done — Agent ≈ model + harness; package split |
+| `internal/ai` | Empty stub (`package ai` only) — no Provider / Message / Response |
+| `internal/agent` | Empty stub (`package agent` only) — no loop |
+| `internal/tools` / `internal/skill` | Do not exist |
+| OpenAI provider package | Does not exist — client lives in `main` |
+
+Working tree clean on `main` @ `4b23b0b` (TODO board) + `894e87b` (round-trip prototype).
 
 ---
 
@@ -26,13 +38,13 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 
 ### Task 3 — `ai` types + Provider interface
 
-- **Description:** `Provider.Prompt` + `Message` / `Response` / roles exist. **Revisit:** grow shape for tool calls + tool results; drop `IsFinal` in favor of “has tool calls?”.
+- **Description:** `Provider.Prompt(ctx, messages, model) (Response, error)` with `Message` / `Response` / roles (incl. room for tools later). Packages exist as empty stubs only — types not written yet. Plan for ReAct: “has tool calls?” not `IsFinal`.
 - **Priority:** P0
-- **Done:** [~] (skeleton; not ReAct-ready)
+- **Done:** [ ]
 
 ### Task 4 — Agent loop (ReAct harness)
 
-- **Description:** `agent.Run`: seed user message → loop `Prompt` → if tool calls: append assistant (text + tool call) + tool result(s) → continue; if no tool calls: final respond; budget backstop. Done only when you own it and can teach Thought / Action / Observation.
+- **Description:** `agent.Run`: seed user message → loop `Prompt` → if tool calls: append assistant (text + tool call) + tool result(s) → continue; if no tool calls: final respond; budget backstop. Empty stub today. Done only when you own it and can teach Thought / Action / Observation.
 - **Priority:** P0
 - **Done:** [ ]
 
@@ -42,7 +54,7 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 
 ### Task 5 — Finish OpenAI provider (text path)
 
-- **Description:** Wire client into `NewOpenAIProvider`; map `[]Message` → Responses input; `Prompt` returns a real text `Response` (compile + run through `ai.Provider`, not inline in `main`).
+- **Description:** `NewOpenAIProvider` owns the client; map `[]Message` → Responses input; `Prompt` returns a real text `Response`. Prove via `ai.Provider`, not inline in `main`.
 - **Priority:** P0
 - **Done:** [ ]
 
@@ -58,7 +70,7 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 
 ### Task 7 — `Message` / `Response` carry tools
 
-- **Description:** Types can represent assistant Thought + Action (tool call id/name/args) and Observation (tool result tied to call id). Provider maps to/from Responses API tool items. Remove `IsFinal`.
+- **Description:** Types can represent assistant Thought + Action (tool call id/name/args) and Observation (tool result tied to call id). Provider maps to/from Responses API tool items.
 - **Priority:** P0
 - **Done:** [ ]
 

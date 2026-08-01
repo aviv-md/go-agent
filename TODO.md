@@ -6,7 +6,7 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 
 **Stop rule:** no tool calls ⇒ that assistant text is the answer. No structured `is_final`. No Submit/Prompt control tools for v1.
 
-**Codebase scan (2026-08-01):** Back to **full round-trip** checkpoint.
+**Codebase scan (2026-08-01):** Task 4 complete; Task 5 is next.
 
 | Area | State |
 |------|--------|
@@ -14,11 +14,11 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 | `cmd/main` | Done — inline OpenRouter Responses one-shot (“Anybody home?”) |
 | `docs/architecture.md` | Done — Agent ≈ model + harness; package split (`model` / `agent` / `skill` / `tools`) |
 | `internal/model` | Types in: `Model.Prompt`, `Message`, flat `Response`, roles; `ToolCalls` still `[]any`; no OpenAI impl yet |
-| `internal/agent` | Empty stub (`package agent` only) — no loop |
+| `internal/agent` | Done — ReAct loop, empty-tool stop, iteration budget, fake-model tests |
 | `internal/tools` / `internal/skill` | Do not exist |
 | OpenAI provider | Does not exist — client lives in `main` |
 
-Working tree clean on `main` @ `4b23b0b` (TODO board) + `894e87b` (round-trip prototype).
+Current implementation checkpoint: `cd948d8` (agent loop tested with a fake model).
 
 ---
 
@@ -36,17 +36,17 @@ Working tree clean on `main` @ `4b23b0b` (TODO board) + `894e87b` (round-trip pr
 - **Priority:** P1
 - **Done:** [x]
 
-### Task 3 — `model` types + Provider interface
+### Task 3 — `model` types + `Model` interface
 
-- **Description:** In `internal/model`: `Model.Prompt([]Message) (Response, error)` with flat `Response` (`Content` + `ToolCalls` stub), roles (user/assistant/system/tool). Agent maps response → history `Message`. Plan for ReAct: “has tool calls?” not `IsFinal`.
+- **Description:** In `internal/model`: `Model.Prompt(context.Context, []Message) (Response, error)` with flat `Response` (`Content` + `ToolCalls` stub), roles (user/assistant/system/tool). Agent maps response → history `Message`. Plan for ReAct: “has tool calls?” not `IsFinal`.
 - **Priority:** P0
 - **Done:** [x]
 
 ### Task 4 — Agent loop (ReAct harness)
 
-- **Description:** `agent.Run`: seed user message → loop `Prompt` → if tool calls: append assistant (text + tool call) + tool result(s) → continue; if no tool calls: final respond; budget backstop. Empty stub today. Done only when you own it and can teach Thought / Action / Observation.
+- **Description:** `agent.Run`: seed user message → loop `Prompt` → if tool calls: append assistant text + stub tool result(s) → continue; if no tool calls: final respond; budget backstop. Proven with fake-model tests; real tool execution remains Task 9.
 - **Priority:** P0
-- **Done:** [ ]
+- **Done:** [x]
 
 ---
 
@@ -54,7 +54,7 @@ Working tree clean on `main` @ `4b23b0b` (TODO board) + `894e87b` (round-trip pr
 
 ### Task 5 — Finish OpenAI provider (text path)
 
-- **Description:** `NewOpenAIProvider` owns the client; map `[]Message` → Responses input; `Prompt` returns a real text `Response`. Prove via `model.Provider`, not inline in `main`.
+- **Description:** `NewOpenAIProvider` owns the client; map `[]Message` → Responses input; `Prompt` returns a real text `Response`. Prove it satisfies `model.Model`, not through an inline call in `main`.
 - **Priority:** P0
 - **Done:** [ ]
 

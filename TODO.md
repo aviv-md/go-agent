@@ -6,19 +6,19 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 
 **Stop rule:** no tool calls ⇒ that assistant text is the answer. No structured `is_final`. No Submit/Prompt control tools for v1.
 
-**Codebase scan (2026-08-01):** Task 4 complete; Task 5 is next.
+**Codebase scan (2026-08-02):** Task 5 implementation is in; provider HTTP behavior still needs proof.
 
 | Area | State |
 |------|--------|
 | `internal/infra/config` | Done — `Load()` / `AI_BASE_URL` / `AI_API_KEY` |
 | `cmd/main` | Done — inline OpenRouter Responses one-shot (“Anybody home?”) |
 | `docs/architecture.md` | Done — Agent ≈ model + harness; package split (`model` / `agent` / `skill` / `tools`) |
-| `internal/model` | Types in: `Model.Prompt`, `Message`, flat `Response`, roles; `ToolCalls` still `[]any`; no OpenAI impl yet |
+| `internal/model` | Types + OpenAI-compatible Responses text provider; role/message conversion tested; `ToolCalls` still `[]any` |
 | `internal/agent` | Done — ReAct loop, empty-tool stop, iteration budget, fake-model tests |
 | `internal/tools` / `internal/skill` | Do not exist |
-| OpenAI provider | Does not exist — client lives in `main` |
+| OpenAI provider | Implemented in `internal/model`; owns client and maps text messages; HTTP request/response path not yet tested or smoked |
 
-Current implementation checkpoint: `cd948d8` (agent loop tested with a fake model).
+Current implementation checkpoint: `09c9025` (provider implementation + conversion tests).
 
 ---
 
@@ -54,7 +54,7 @@ Current implementation checkpoint: `cd948d8` (agent loop tested with a fake mode
 
 ### Task 5 — Finish OpenAI provider (text path)
 
-- **Description:** `NewOpenAIProvider` owns the client; map `[]Message` → Responses input; `Prompt` returns a real text `Response`. Prove it satisfies `model.Model`, not through an inline call in `main`.
+- **Description:** `NewOpenAIProvider` owns the client; `[]Message` → Responses input mapping and `model.Model` assertion are implemented. Remaining proof: exercise `Prompt` through HTTP and confirm a real text `Response`, not through the inline call in `main`.
 - **Priority:** P0
 - **Done:** [ ]
 

@@ -22,6 +22,8 @@
 
 ## Package separation
 
+These are target ownership boundaries, not a claim that every package already exists. `TODO.md` is the source of truth for implementation status.
+
 | Package | Owns | Does not own |
 |---------|------|----------------|
 | `internal/model` | Model I/O (messages in → assistant turn out) | Loop, skills, tools |
@@ -29,7 +31,7 @@
 | `internal/skill` | Discover / load / select `SKILL.md` (and related assets) | Calling the model, running tools |
 | `internal/tools` | Register + execute tools (schemas, handlers) | Prompt assembly, skill matching |
 
-### Dependency direction
+### Target dependency direction
 
 ```
 agent → model, skill, tools
@@ -40,12 +42,12 @@ model ↛ agent / skill / tools
 
 If `skill` starts importing `tools`, playbook text and runtime registry are probably mixed.
 
-### First thin slice (per package)
+### Planned thin slices (per package)
 
 - **`tools`**: one tool, invoke it, get a result.
-- **`skill`**: load one `SKILL.md` into something the agent can put in context.
-- **`agent`**: one loop turn that uses both.
-- **`model`**: reliable chat completion boundary (tool calls when needed).
+- **`skill`**: later, after the demo scope freeze, load one `SKILL.md` into agent context.
+- **`agent`**: drive model turns now; add one real tool turn next. Skills remain deferred.
+- **`model`**: OpenAI-compatible Responses API boundary; text is implemented first, tool-call mapping follows.
 
 ---
 

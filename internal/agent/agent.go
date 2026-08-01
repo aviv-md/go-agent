@@ -51,7 +51,7 @@ func (a *agent) Run(ctx context.Context, input string) (string, error) {
 			break
 		}
 
-		if iterations == a.MaxIterations {
+		if iterations >= a.MaxIterations {
 			return messages[len(messages)-1].Content, fmt.Errorf("max iterations reached")
 		}
 
@@ -75,7 +75,7 @@ func NewAgent(m model.Model, maxIterations uint8) *agent {
 	}
 
 	if m == nil {
-		log.Fatal("Model must be provided")
+		panic("Model must be provided")
 	}
 
 	return &agent{

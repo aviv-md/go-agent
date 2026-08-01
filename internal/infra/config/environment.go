@@ -36,5 +36,13 @@ func Load() *Environment {
 		},
 	}
 
+	if Env.BaseURL == "" {
+		log.Fatal("AI_BASE_URL is required")
+	}
+
+	if Env.APIKey == "" {
+		log.Fatal("AI_API_KEY is required")
+	}
+
 	return Env
 }

@@ -4,6 +4,8 @@ One-line pointers for future sessions. Newest first.
 
 | Date | Milestone |
 |------|-----------|
+| 2026-08-01 | Task 4 done (loop + fake tests); next = Task 5 provider |
+| 2026-08-01 | Task 4 loop shipped; next = fake Model tests (`*_test.go`) |
 | 2026-08-01 | Task 4: Agent as `*agent`, NewAgent(model, maxIters); next = fake + Run loop |
 | 2026-08-01 | Task 4 design: fake Model, Run(ctx), stop=empty ToolCalls, Thought≠reasoning knob |
 | 2026-08-01 | Session wrap: Task 3 committed; next convo → Task 4 agent loop |

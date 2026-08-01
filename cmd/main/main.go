@@ -2,44 +2,31 @@ package main
 
 import (
 	"context"
+	"explorations/agents/internal/agent"
 	"explorations/agents/internal/infra/config"
+	"explorations/agents/internal/model"
 
 	"github.com/charmbracelet/log"
-
-	"github.com/openai/openai-go/v3"
-	"github.com/openai/openai-go/v3/option"
-	"github.com/openai/openai-go/v3/responses"
 )
 
 func main() {
 
 	env := config.Load()
 
-	// ai.Provider
-	// In order to instantiate this one we need to instantiate
-	// the openai client
-
-	oai := openai.NewClient(
-		option.WithBaseURL(env.AI.BaseURL),
-		option.WithAPIKey(env.AI.APIKey),
-	)
-
-	// Let's set an example prompt!
-	q := "Anybody home?"
-
 	ctx := context.Background()
-	resp, err := oai.Responses.New(ctx,
-		responses.ResponseNewParams{
-			Input: responses.ResponseNewParamsInputUnion{
-				OfString: openai.String(q),
-			},
-			Model: openai.ChatModelGPT5Nano,
-		},
+
+	m := model.NewOpenAIProvider("~deepseek/deepseek-v4-flash-latest", env.APIKey, env.BaseURL)
+	a := agent.NewAgent(
+		m,
+		10,
 	)
 
+	query := "Is there anybody home?"
+
+	resp, err := a.Run(ctx, query)
 	if err != nil {
-		log.Error(err)
+		log.Fatal(err)
 	}
 
-	log.Info(resp.OutputText())
+	log.Info(resp)
 }

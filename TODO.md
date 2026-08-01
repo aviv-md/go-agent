@@ -6,19 +6,19 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 
 **Stop rule:** no tool calls ⇒ that assistant text is the answer. No structured `is_final`. No Submit/Prompt control tools for v1.
 
-**Codebase scan (2026-08-02):** Task 5 implementation is in; provider HTTP behavior still needs proof.
+**Codebase scan (2026-08-02):** Tasks 5 and 6 are live-smoke verified; next is tool-aware model types.
 
 | Area | State |
 |------|--------|
 | `internal/infra/config` | Done — `Load()` / `AI_BASE_URL` / `AI_API_KEY` |
-| `cmd/main` | Done — inline OpenRouter Responses one-shot (“Anybody home?”) |
+| `cmd/main` | Thin — config → OpenAI provider → agent → `Run` → answer |
 | `docs/architecture.md` | Done — Agent ≈ model + harness; package split (`model` / `agent` / `skill` / `tools`) |
 | `internal/model` | Types + OpenAI-compatible Responses text provider; role/message conversion tested; `ToolCalls` still `[]any` |
 | `internal/agent` | Done — ReAct loop, empty-tool stop, iteration budget, fake-model tests |
 | `internal/tools` / `internal/skill` | Do not exist |
-| OpenAI provider | Implemented in `internal/model`; owns client and maps text messages; HTTP request/response path not yet tested or smoked |
+| OpenAI provider | Done for text — owns client, maps messages, and returned a live OpenRouter response through `agent.Run` |
 
-Current implementation checkpoint: `09c9025` (provider implementation + conversion tests).
+Current implementation checkpoint: Tasks 5 + 6 live text path verified locally.
 
 ---
 
@@ -54,15 +54,15 @@ Current implementation checkpoint: `09c9025` (provider implementation + conversi
 
 ### Task 5 — Finish OpenAI provider (text path)
 
-- **Description:** `NewOpenAIProvider` owns the client; `[]Message` → Responses input mapping and `model.Model` assertion are implemented. Remaining proof: exercise `Prompt` through HTTP and confirm a real text `Response`, not through the inline call in `main`.
+- **Description:** `NewOpenAIProvider` owns the client; `[]Message` → Responses input mapping and `model.Model` assertion are implemented. Proven through a live OpenRouter response via `agent.Run`.
 - **Priority:** P0
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 6 — Thin `main` through agent
 
-- **Description:** `main` loads config → builds provider → `NewAgent` → `Run`; delete/bypass the inline one-shot Responses call. Early smoke: one-shot ask → answer (no tools) still proves the pipe.
+- **Description:** `main` loads config → builds provider → `NewAgent` → `Run`; the inline SDK call is gone. Live one-shot smoke returned text through the complete no-tool path.
 - **Priority:** P0
-- **Done:** [ ]
+- **Done:** [x]
 
 ---
 
@@ -146,3 +146,9 @@ Current implementation checkpoint: `09c9025` (provider implementation + conversi
 - Streaming / pubsub
 - Cyvore agent platform pitch
 - Article (future, if talk lands)
+
+---
+
+## Extras backlog (explicitly deferred)
+
+- **Provider HTTP contract test:** use `httptest.Server` to verify the real SDK request shape (`POST /responses`, model, messages) and decode a synthetic assistant `output_text`. Valuable for learning and regression coverage, but not required before the live Task 6 smoke.

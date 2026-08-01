@@ -4,7 +4,8 @@ One-line pointers for future sessions. Newest first.
 
 | Date | Milestone |
 |------|-----------|
-| 2026-08-02 | Task 5 provider implemented + conversion-tested; HTTP text path still needs proof |
+| 2026-08-02 | Tasks 5 + 6 done: thin main returned a live OpenRouter response through provider → agent |
+| 2026-08-02 | Provider implemented + conversion-tested; live Task 6 smoke next, `httptest.Server` contract test deferred to extras |
 | 2026-08-01 | TODO reconciled: Task 4 done, current `model.Model` signature/name captured; next = Task 5 |
 | 2026-08-01 | Session wrap: Task 4 done; next convo → Task 5 OpenAI provider |
 | 2026-08-01 | Task 4 done (loop + fake tests); next = Task 5 provider |

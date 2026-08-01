@@ -152,3 +152,14 @@ Current implementation checkpoint: Tasks 5 + 6 live text path verified locally.
 ## Extras backlog (explicitly deferred)
 
 - **Provider HTTP contract test:** use `httptest.Server` to verify the real SDK request shape (`POST /responses`, model, messages) and decode a synthetic assistant `output_text`. Valuable for learning and regression coverage, but not required before the live Task 6 smoke.
+
+### From code review (2026-08-02)
+
+- **`RoleTool` cannot reach the provider — blocks Task 7.** The loop appends a `RoleTool` message (`internal/agent/agent.go:60-63`), but `convertRoleToOpenAIRole` has no `RoleTool` case and returns an error (`internal/model/openai.go:20-31`). The first real tool call therefore dies on the *next* `Prompt` with `role "tool" cannot be converted to OpenAI`. Invisible today only because the provider never populates `ToolCalls`. Not optional — Task 7 has to close this seam, and the Responses API wants a tool result item tied to a call id, not an `EasyInputMessage` role.
+- **`log.Fatal` in `NewAgent`.** `internal/agent/agent.go:78` calls `os.Exit` from library code on a nil model. Violates the project's own "return errors explicitly" rule. A nil model is a programmer error: panic or return an error, but don't kill the caller's process from inside `internal/agent`.
+- **`Role = string` is a type alias, not a distinct type.** `internal/model/model.go:20` — the `=` means every string in the program is a valid `Role`, so there is zero compile-time safety on roles. Dropping the `=` costs one character. Check first whether the alias is still load-bearing for the SDK conversion.
+- **`NewAgent` returns unexported `*agent`.** Exported constructor handing back an unexported type with exported fields (`internal/agent/agent.go:15,70`). Callers outside the package can hold the value but cannot name it in a signature.
+- **`config.Load()` does not validate `APIKey`.** `internal/infra/config/environment.go:32-37` accepts an empty key, so a missing `AI_API_KEY` surfaces as a confusing 401 from OpenRouter instead of a clear startup failure. Trust boundary, cheap fix.
+- **Iteration budget uses `==` instead of `>=`.** `internal/agent/agent.go:54` is correct today only because the counter increments by exactly one per lap. Brittle the moment anything else touches it.
+
+Deliberately *not* on this list (reviewed and accepted as-is): `ToolCalls []any` as an honest stub that Task 7 replaces, `config.Env` as an unguarded package global under a single-threaded `main`, and the hardcoded model string in `cmd/main/main.go:18`.

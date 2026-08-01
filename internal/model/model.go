@@ -1,5 +1,7 @@
 package model
 
+import "context"
+
 type (
 	Response struct {
 		Content   string
@@ -12,7 +14,7 @@ type (
 	}
 
 	Model interface {
-		Prompt(input []Message) (Response, error)
+		Prompt(ctx context.Context, input []Message) (Response, error)
 	}
 
 	Role = string

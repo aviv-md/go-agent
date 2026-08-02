@@ -4,6 +4,7 @@ One-line pointers for future sessions. Newest first.
 
 | Date | Milestone |
 |------|-----------|
+| 2026-08-03 | Task 8 done: provider-neutral Tool + registry + deterministic room-temperature tool; next = Task 9 agent tool turn |
 | 2026-08-02 | Task 7 done: Message interface hierarchy + constructors, provider fan-out both directions, `RoleTool` scar retired; next = Task 8 tools slice |
 | 2026-08-02 | Review fixes landed (panic on nil model, `>=` budget, config validation); Task 7 deferred fresh; `CLAUDE.md` now imports the pairing contract |
 | 2026-08-02 | Tasks 5 + 6 done: thin main returned a live OpenRouter response through provider → agent |

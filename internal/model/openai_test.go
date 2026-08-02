@@ -51,34 +51,36 @@ func TestConvertRoleToOpenAIRole(t *testing.T) {
 }
 
 func TestConvertMessageToOpenAIInput(t *testing.T) {
-	message := Message{
-		Role:    RoleUser,
-		Content: "psst kid wanna write some tests?",
-	}
+
+	message := NewUserMessage(
+		"psst kid wanna write some tests?",
+	)
 
 	openAIInput, err := convertMessageToOpenAIInput(message)
 	if err != nil {
 		t.Fatalf("Error converting message to OpenAI input: %v", err)
 	}
 
-	r := openAIInput.GetRole()
-	if r == nil {
-		t.Fatalf("Expected a role, got nil")
-	}
-	if *r != string(responses.EasyInputMessageRoleUser) {
-		t.Errorf("Expected user, got %s", *r)
-	}
+	for _, conv := range openAIInput {
+		r := conv.GetRole()
+		if r == nil {
+			t.Fatalf("Expected a role, got nil")
+		}
+		if *r != string(responses.EasyInputMessageRoleUser) {
+			t.Errorf("Expected user, got %s", *r)
+		}
 
-	c := openAIInput.OfMessage
+		c := conv.OfMessage
 
-	if c == nil {
-		t.Fatalf("Expected a message, got nil")
-	}
-	if !c.Content.OfString.Valid() {
-		t.Fatalf("Expected c.Content.OfString.Valid() to be true, instead got false.")
-	}
+		if c == nil {
+			t.Fatalf("Expected a message, got nil")
+		}
+		if !c.Content.OfString.Valid() {
+			t.Fatalf("Expected c.Content.OfString.Valid() to be true, instead got false.")
+		}
 
-	if c.Content.OfString.Value != "psst kid wanna write some tests?" {
-		t.Fatalf("Expected 'psst kid wanna write some tests?', got %s", c.Content.OfString.String())
+		if c.Content.OfString.Value != "psst kid wanna write some tests?" {
+			t.Fatalf("Expected 'psst kid wanna write some tests?', got %s", c.Content.OfString.String())
+		}
 	}
 }

@@ -3,26 +3,16 @@ package model
 import "context"
 
 type (
-	Response struct {
-		Content   string
-		ToolCalls []any // currently a stub.
-	}
-
-	Message struct {
-		Role    Role
-		Content string
-	}
-
 	Model interface {
-		Prompt(ctx context.Context, input []Message) (Response, error)
+		Prompt(ctx context.Context, input []Message) (AssistantMessage, error)
 	}
 
-	Role = string
+	Role string
 )
 
 const (
-	RoleUser      = "user"
-	RoleAssistant = "assistant"
-	RoleSystem    = "system"
-	RoleTool      = "tool"
+	RoleUser      = Role("user")
+	RoleAssistant = Role("assistant")
+	RoleSystem    = Role("system")
+	RoleTool      = Role("tool")
 )

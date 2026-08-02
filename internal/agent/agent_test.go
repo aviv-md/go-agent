@@ -10,17 +10,17 @@ import (
 // Implementing a fake model.
 
 type MockModel struct {
-	responses []model.Response
-	current   int
+	messages []model.AssistantMessage
+	current  int
 }
 
 // Prompt implements [model.Model].
-func (m *MockModel) Prompt(ctx context.Context, input []model.Message) (model.Response, error) {
-	if m.current >= len(m.responses) {
-		return model.Response{}, fmt.Errorf("no more responses")
+func (m *MockModel) Prompt(ctx context.Context, input []model.Message) (model.AssistantMessage, error) {
+	if m.current >= len(m.messages) {
+		return nil, fmt.Errorf("no more responses")
 	}
 
-	resp := m.responses[m.current]
+	resp := m.messages[m.current]
 	m.current = m.current + 1
 
 	return resp, nil
@@ -29,10 +29,8 @@ func (m *MockModel) Prompt(ctx context.Context, input []model.Message) (model.Re
 func TestRun_NoToolCalls_ReturnsContent(t *testing.T) {
 	// Arrange
 	mockModel := MockModel{
-		responses: []model.Response{
-			{
-				Content: "Hello, world!",
-			},
+		messages: []model.AssistantMessage{
+			model.NewAssistantMessage("Hello, world!", []model.ToolCall{}),
 		},
 	}
 
@@ -54,19 +52,29 @@ func TestRun_NoToolCalls_ReturnsContent(t *testing.T) {
 
 func TestRun_ToolCalls_LowBudget(t *testing.T) {
 	mockModel := MockModel{
-		responses: []model.Response{
-			{
-				Content: `Searching for file "test.md"`,
-				ToolCalls: []any{
-					"find_file",
-				},
-			},
-			{
-				Content: `Reading file "test.md"`,
-				ToolCalls: []any{
-					"read_file",
-				},
-			},
+		messages: []model.AssistantMessage{
+			model.NewAssistantMessage(
+				`Searching for file "test.md"`,
+				[]model.ToolCall{
+					model.NewToolCall(
+						"1",
+						"find_file",
+						map[string]any{
+							"file_name": "test.md",
+						},
+					)},
+			),
+			model.NewAssistantMessage(
+				`Reading file "test.md"`,
+				[]model.ToolCall{
+					model.NewToolCall(
+						"2",
+						"read_file",
+						map[string]any{
+							"file_name": "test.md",
+						},
+					)},
+			),
 		},
 	}
 

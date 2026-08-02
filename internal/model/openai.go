@@ -2,6 +2,8 @@ package model
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/openai/openai-go/v3"
@@ -30,35 +32,86 @@ func convertRoleToOpenAIRole(role Role) (responses.EasyInputMessageRole, error) 
 	return "", fmt.Errorf(`role "%s" cannot be converted to OpenAI`, role)
 }
 
-func convertMessageToOpenAIInput(message Message) (responses.ResponseInputItemUnionParam, error) {
+func convertMessageToOpenAIInput(message Message) ([]responses.ResponseInputItemUnionParam, error) {
 
-	r, err := convertRoleToOpenAIRole(message.Role)
-	if err != nil {
-		return responses.ResponseInputItemUnionParam{}, err
+	var result []responses.ResponseInputItemUnionParam
+
+	switch message.Role() {
+	case RoleSystem, RoleUser:
+		r, _ := convertRoleToOpenAIRole(message.Role())
+		result = append(result, responses.ResponseInputItemParamOfMessage(message.Content(), r))
+	case RoleAssistant:
+		r, _ := convertRoleToOpenAIRole(message.Role())
+		am, _ := message.(AssistantMessage) // I expect it to always work bc of the switch
+
+		if am.Content() != "" {
+			result = append(result, responses.ResponseInputItemParamOfMessage(message.Content(), r))
+		}
+
+		toolCalls := am.ToolCalls()
+
+		for _, toolCall := range toolCalls {
+			args, err := json.Marshal(toolCall.Args())
+			if err != nil {
+				return nil, err
+			}
+			result = append(result, responses.ResponseInputItemParamOfFunctionCall(string(args), toolCall.id, toolCall.name))
+		}
+	case RoleTool:
+		// Tool output bro.
+		tm := message.(ToolMessage)
+
+		if tm.CallID() == "" {
+			return nil, errors.New("tool message must have a call id")
+		}
+
+		result = append(result, responses.ResponseInputItemParamOfFunctionCallOutput(tm.CallID(), tm.Content()))
 	}
 
-	result := responses.ResponseInputItemParamOfMessage(message.Content, r)
 	return result, nil
 }
 
-func convertOpenAIResponseToModelResponse(resp *responses.Response) Response {
+func convertOpenAIResponseToAssistantMessage(resp *responses.Response) (AssistantMessage, error) {
 
-	return Response{
-		Content: resp.OutputText(),
+	// Convert toolcalls.
+	o := resp.Output
+	content := resp.OutputText()
+	toolCalls := []ToolCall{}
+
+	for _, item := range o {
+		if item.Type != "function_call" {
+			continue
+		}
+
+		// Unmarshall JSON to map[string]any
+		var args map[string]any
+		err := json.Unmarshal([]byte(item.Arguments.OfString), &args)
+		if err != nil {
+			return nil, err
+		}
+
+		toolCalls = append(toolCalls, NewToolCall(
+			item.CallID,
+			item.Name,
+			args,
+		))
 	}
+
+	return NewAssistantMessage(content, toolCalls), nil
 }
 
 // Prompt implements [Model].
-func (o *OpenAIProvider) Prompt(ctx context.Context, input []Message) (Response, error) {
+func (o *OpenAIProvider) Prompt(ctx context.Context, input []Message) (AssistantMessage, error) {
 	i := []responses.ResponseInputItemUnionParam{}
 
 	for _, message := range input {
+
 		converted, err := convertMessageToOpenAIInput(message)
 		if err != nil {
-			return Response{}, err
+			return nil, err
 		}
 
-		i = append(i, converted)
+		i = append(i, converted...)
 	}
 
 	response, err := o.client.Responses.New(ctx, responses.ResponseNewParams{
@@ -69,10 +122,16 @@ func (o *OpenAIProvider) Prompt(ctx context.Context, input []Message) (Response,
 	})
 
 	if err != nil {
-		return Response{}, err
+		return nil, err
 	}
 
-	return convertOpenAIResponseToModelResponse(response), nil
+	// Convert response to AssistantMessage.
+	result, err := convertOpenAIResponseToAssistantMessage(response)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 func NewOpenAIProvider(model string, apiKey string, baseURL string) *OpenAIProvider {

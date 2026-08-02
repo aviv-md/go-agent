@@ -3,6 +3,7 @@ package agent
 import (
 	"context"
 	"explorations/agents/internal/model"
+	"explorations/agents/internal/tools"
 	"fmt"
 	"testing"
 )
@@ -15,7 +16,7 @@ type MockModel struct {
 }
 
 // Prompt implements [model.Model].
-func (m *MockModel) Prompt(ctx context.Context, input []model.Message) (model.AssistantMessage, error) {
+func (m *MockModel) Prompt(ctx context.Context, input []model.Message, tools model.Tools) (model.AssistantMessage, error) {
 	if m.current >= len(m.messages) {
 		return nil, fmt.Errorf("no more responses")
 	}
@@ -34,7 +35,9 @@ func TestRun_NoToolCalls_ReturnsContent(t *testing.T) {
 		},
 	}
 
-	agent := NewAgent(&mockModel, uint8(10))
+	registry := tools.NewRegistry()
+
+	agent := NewAgent(&mockModel, uint8(10), *registry, "")
 
 	r, err := agent.Run(t.Context(), "Hey there")
 	if err != nil {
@@ -54,39 +57,42 @@ func TestRun_ToolCalls_LowBudget(t *testing.T) {
 	mockModel := MockModel{
 		messages: []model.AssistantMessage{
 			model.NewAssistantMessage(
-				`Searching for file "test.md"`,
+				`Looking up temprerature in the bedroom`,
 				[]model.ToolCall{
 					model.NewToolCall(
 						"1",
-						"find_file",
+						"room_temperature",
 						map[string]any{
-							"file_name": "test.md",
+							"room": "bedroom",
 						},
 					)},
 			),
 			model.NewAssistantMessage(
-				`Reading file "test.md"`,
+				`Looking up temprerature in the living room`,
 				[]model.ToolCall{
 					model.NewToolCall(
 						"2",
-						"read_file",
+						"room_temperature",
 						map[string]any{
-							"file_name": "test.md",
+							"room": "living_room",
 						},
 					)},
 			),
 		},
 	}
 
-	agent := NewAgent(&mockModel, 2)
-	r, err := agent.Run(t.Context(), "Look for test.md file on my computer and read it")
+	registry := tools.NewRegistry()
+	temperature := tools.NewRoomTemperatureTool()
+	registry.Register(temperature)
+	agent := NewAgent(&mockModel, 2, *registry, "")
+	r, err := agent.Run(t.Context(), "Check temprature in my bedroom and living room")
 
 	if err == nil {
 		t.Fatal("Expected run to return err, instead err is nil")
 	}
 
-	if r != `Reading file "test.md"` {
-		t.Fatalf("Expected string: %s, instead it returned empty string", `Reading file "test.md"`)
+	if r != `Looking up temprerature in the living room` {
+		t.Fatalf("Expected string: %s, instead it returned empty string", `Looking up temprerature in the living room`)
 	}
 
 	if mockModel.current != 2 {

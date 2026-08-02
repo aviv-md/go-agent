@@ -4,6 +4,12 @@ One-line pointers for future sessions. Newest first.
 
 | Date | Milestone |
 |------|-----------|
+| 2026-08-03 | Task 10 logging cleanup deferred: transcript boundary, centralized styling, rendering tests |
+| 2026-08-03 | Task 10 done: colored visible Thought → Action → Observation → Respond lifecycle |
+| 2026-08-03 | All remaining Task 9 concerns moved to post-demo polish; none block the demo |
+| 2026-08-03 | Task 9 accepted for demo: live tool turn passed; focused regression coverage deferred |
+| 2026-08-03 | Task 9 live smoke passed end-to-end; focused transcript regression test remains |
+| 2026-08-03 | Task 9 boundary: tool parameters travel with each prompt; metadata stays beside handlers |
 | 2026-08-03 | Task 8 done: provider-neutral Tool + registry + deterministic room-temperature tool; next = Task 9 agent tool turn |
 | 2026-08-02 | Task 7 done: Message interface hierarchy + constructors, provider fan-out both directions, `RoleTool` scar retired; next = Task 8 tools slice |
 | 2026-08-02 | Review fixes landed (panic on nil model, `>=` budget, config validation); Task 7 deferred fresh; `CLAUDE.md` now imports the pairing contract |

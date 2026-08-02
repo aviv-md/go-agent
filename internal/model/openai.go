@@ -8,6 +8,7 @@ import (
 
 	"github.com/openai/openai-go/v3"
 	"github.com/openai/openai-go/v3/option"
+	"github.com/openai/openai-go/v3/packages/param"
 	"github.com/openai/openai-go/v3/responses"
 )
 
@@ -100,9 +101,18 @@ func convertOpenAIResponseToAssistantMessage(resp *responses.Response) (Assistan
 	return NewAssistantMessage(content, toolCalls), nil
 }
 
+func convertToolsToOpenAITools(tool AvailableTool) responses.ToolUnionParam {
+	t := responses.ToolParamOfFunction(tool.Name(), tool.Parameters(), false)
+
+	t.OfFunction.Description = param.NewOpt(tool.Description())
+
+	return t
+}
+
 // Prompt implements [Model].
-func (o *OpenAIProvider) Prompt(ctx context.Context, input []Message) (AssistantMessage, error) {
-	i := []responses.ResponseInputItemUnionParam{}
+func (o *OpenAIProvider) Prompt(ctx context.Context, input []Message, tools Tools) (AssistantMessage, error) {
+	convertedInputs := []responses.ResponseInputItemUnionParam{}
+	convertedTools := []responses.ToolUnionParam{}
 
 	for _, message := range input {
 
@@ -111,13 +121,19 @@ func (o *OpenAIProvider) Prompt(ctx context.Context, input []Message) (Assistant
 			return nil, err
 		}
 
-		i = append(i, converted...)
+		convertedInputs = append(convertedInputs, converted...)
+	}
+
+	for _, tool := range tools {
+		converted := convertToolsToOpenAITools(tool)
+		convertedTools = append(convertedTools, converted)
 	}
 
 	response, err := o.client.Responses.New(ctx, responses.ResponseNewParams{
 		Input: responses.ResponseNewParamsInputUnion{
-			OfInputItemList: i,
+			OfInputItemList: convertedInputs,
 		},
+		Tools: convertedTools,
 		Model: o.model,
 	})
 

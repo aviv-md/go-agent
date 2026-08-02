@@ -6,19 +6,20 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 
 **Stop rule:** no tool calls ⇒ that assistant text is the answer. No structured `is_final`. No Submit/Prompt control tools for v1.
 
-**Codebase scan (2026-08-02):** Tasks 5 and 6 are live-smoke verified; next is tool-aware model types.
+**Codebase scan (2026-08-03):** Tasks 5 and 6 are live-smoke verified; Tasks 7 and 8 are implementation/test verified; next is the agent tool turn.
 
 | Area | State |
 |------|--------|
 | `internal/infra/config` | Done — `Load()` / `AI_BASE_URL` / `AI_API_KEY` |
 | `cmd/main` | Thin — config → OpenAI provider → agent → `Run` → answer |
 | `docs/architecture.md` | Done — Agent ≈ model + harness; package split (`model` / `agent` / `skill` / `tools`) |
-| `internal/model` | Types + OpenAI-compatible Responses text provider; role/message conversion tested; `ToolCalls` still `[]any` |
+| `internal/model` | Tool-aware message types + OpenAI-compatible Responses provider; text/tool conversion tested |
 | `internal/agent` | Done — ReAct loop, empty-tool stop, iteration budget, fake-model tests |
-| `internal/tools` / `internal/skill` | Do not exist |
+| `internal/tools` | Done — tool metadata/schema/handler, registry list/execute, room-temperature tool |
+| `internal/skill` | Does not exist |
 | OpenAI provider | Done for text — owns client, maps messages, and returned a live OpenRouter response through `agent.Run` |
 
-Current implementation checkpoint: Tasks 5 + 6 live text path verified locally.
+Current implementation checkpoint: Tasks 5–8 done; next wire the registry into the agent loop.
 
 ---
 
@@ -72,13 +73,13 @@ Current implementation checkpoint: Tasks 5 + 6 live text path verified locally.
 
 - **Description:** Types can represent assistant Thought + Action (tool call id/name/args) and Observation (tool result tied to call id). Provider maps to/from Responses API tool items.
 - **Priority:** P0
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 8 — `tools` thin slice
 
-- **Description:** Add `internal/tools`: register + execute one dumb tool (keep it boring; domain still open).
+- **Description:** Added `internal/tools`: provider-neutral tool metadata/schema/handler, registry list/execute with unknown-tool errors, and a deterministic room-temperature tool factory.
 - **Priority:** P0
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 9 — Agent tool turn (verbose transcript)
 

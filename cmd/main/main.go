@@ -34,9 +34,9 @@ func main() {
 	`
 
 	r := tools.NewRegistry()
-	temprature := tools.NewRoomTemperatureTool()
+	temperature := tools.NewRoomTemperatureTool()
 
-	r.Register(temprature)
+	r.Register(temperature)
 
 	m := model.NewOpenAIProvider("~deepseek/deepseek-v4-flash-latest", env.APIKey, env.BaseURL)
 	a := agent.NewAgent(
@@ -46,7 +46,8 @@ func main() {
 		systemMessage,
 	)
 
-	query := "Do you know the temprature in my bedroom?"
+	query := "Do you know the temperature in my bedroom?"
+	// query := "How's it going?"
 
 	_, err := a.Run(ctx, query)
 	if err != nil {

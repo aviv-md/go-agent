@@ -84,7 +84,7 @@ func convertOpenAIResponseToAssistantMessage(resp *responses.Response) (Assistan
 			continue
 		}
 
-		// Unmarshall JSON to map[string]any
+		// Unmarshal JSON to map[string]any
 		var args map[string]any
 		err := json.Unmarshal([]byte(item.Arguments.OfString), &args)
 		if err != nil {

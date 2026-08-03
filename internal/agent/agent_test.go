@@ -57,7 +57,7 @@ func TestRun_ToolCalls_LowBudget(t *testing.T) {
 	mockModel := MockModel{
 		messages: []model.AssistantMessage{
 			model.NewAssistantMessage(
-				`Looking up temprerature in the bedroom`,
+				`Looking up temperature in the bedroom`,
 				[]model.ToolCall{
 					model.NewToolCall(
 						"1",
@@ -68,7 +68,7 @@ func TestRun_ToolCalls_LowBudget(t *testing.T) {
 					)},
 			),
 			model.NewAssistantMessage(
-				`Looking up temprerature in the living room`,
+				`Looking up temperature in the living room`,
 				[]model.ToolCall{
 					model.NewToolCall(
 						"2",
@@ -85,14 +85,14 @@ func TestRun_ToolCalls_LowBudget(t *testing.T) {
 	temperature := tools.NewRoomTemperatureTool()
 	registry.Register(temperature)
 	agent := NewAgent(&mockModel, 2, *registry, "")
-	r, err := agent.Run(t.Context(), "Check temprature in my bedroom and living room")
+	r, err := agent.Run(t.Context(), "Check temperature in my bedroom and living room")
 
 	if err == nil {
 		t.Fatal("Expected run to return err, instead err is nil")
 	}
 
-	if r != `Looking up temprerature in the living room` {
-		t.Fatalf("Expected string: %s, instead it returned empty string", `Looking up temprerature in the living room`)
+	if r != `Looking up temperature in the living room` {
+		t.Fatalf("Expected string: %s, instead it returned empty string", `Looking up temperature in the living room`)
 	}
 
 	if mockModel.current != 2 {

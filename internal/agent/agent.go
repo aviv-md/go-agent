@@ -66,7 +66,7 @@ func (a *agent) Run(ctx context.Context, input string) (string, error) {
 		}
 
 		for _, t := range assistantMessage.ToolCalls() {
-			// executute the tool and retrieve observation
+			// execute the tool and retrieve observation
 			log.Printf("%s %s %v", lipgloss.NewStyle().Foreground(lipgloss.Color("#CFFF04")).Render("[Action]"), t.Name(), t.Args())
 			content, err := a.Registry.Execute(t.Name(), t.Args())
 

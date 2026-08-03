@@ -13,7 +13,7 @@ func NewRoomTemperatureTool() Tool {
 
 	name := "room_temperature"
 	desc := "Get the temperature of a room"
-	schema := map[string]any{
+	parameters := map[string]any{
 		"type": "object",
 		"properties": map[string]any{
 			"room": map[string]any{
@@ -27,7 +27,7 @@ func NewRoomTemperatureTool() Tool {
 	return NewTool(
 		name,
 		desc,
-		schema,
+		parameters,
 		fn,
 	)
 }

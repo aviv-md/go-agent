@@ -3,8 +3,10 @@ package model
 import "context"
 
 type (
+	Tools = []AvailableTool
+
 	Model interface {
-		Prompt(ctx context.Context, input []Message) (AssistantMessage, error)
+		Prompt(ctx context.Context, input []Message, tools Tools) (AssistantMessage, error)
 	}
 
 	Role string

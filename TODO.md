@@ -6,7 +6,7 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 
 **Stop rule:** no tool calls ⇒ that assistant text is the answer. No structured `is_final`. No Submit/Prompt control tools for v1.
 
-**Codebase scan (2026-08-03):** Tasks 5 and 6 are live-smoke verified; Tasks 7 and 8 are implementation/test verified; next is the agent tool turn.
+**Codebase scan (2026-08-03):** Tasks 5–8 are implementation/test verified; Task 9 is implementation verified and passed a live tool-turn smoke.
 
 | Area | State |
 |------|--------|
@@ -14,12 +14,18 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 | `cmd/main` | Thin — config → OpenAI provider → agent → `Run` → answer |
 | `docs/architecture.md` | Done — Agent ≈ model + harness; package split (`model` / `agent` / `skill` / `tools`) |
 | `internal/model` | Tool-aware message types + OpenAI-compatible Responses provider; text/tool conversion tested |
-| `internal/agent` | Done — ReAct loop, empty-tool stop, iteration budget, fake-model tests |
-| `internal/tools` | Done — tool metadata/schema/handler, registry list/execute, room-temperature tool |
+| `internal/agent` | Done — ReAct loop, registry-backed tool execution, call-ID-bound observations, empty-tool stop, iteration budget |
+| `internal/tools` | Done — tool metadata/parameters/handler, registry list/execute, room-temperature tool |
 | `internal/skill` | Does not exist |
-| OpenAI provider | Done for text — owns client, maps messages, and returned a live OpenRouter response through `agent.Run` |
+| OpenAI provider | Done for text + tools — maps messages and tool definitions/calls/results; live OpenRouter tool turn passed |
 
-Current implementation checkpoint: Tasks 5–8 done; next wire the registry into the agent loop.
+Current checkpoint: Tasks 5–15 done; the demo is frozen and the 45-minute workshop deck is drafted. One human cold rehearsal remains.
+
+Presentation artifacts:
+
+- `docs/presentation.md` — canonical workshop outline.
+- `docs/speaker-cheatsheet.md` / `docs/speaker-cheatsheet.he.md` — English and Hebrew speaker notes.
+- `docs/speaker-cheatsheet.en.html` / `docs/speaker-cheatsheet.he.html` — standalone browser/print versions.
 
 ---
 
@@ -77,7 +83,7 @@ Current implementation checkpoint: Tasks 5–8 done; next wire the registry into
 
 ### Task 8 — `tools` thin slice
 
-- **Description:** Added `internal/tools`: provider-neutral tool metadata/schema/handler, registry list/execute with unknown-tool errors, and a deterministic room-temperature tool factory.
+- **Description:** Added `internal/tools`: provider-neutral tool metadata/parameters/handler, registry list/execute with unknown-tool errors, and a deterministic room-temperature tool factory.
 - **Priority:** P0
 - **Done:** [x]
 
@@ -85,19 +91,19 @@ Current implementation checkpoint: Tasks 5–8 done; next wire the registry into
 
 - **Description:** On tool calls: append assistant blabber + tool call, run tool, append result, `Prompt` again. On no tool calls: stop with that text as the answer. Prefer **one Action per Thought** for the teaching demo (parallel tools = later).
 - **Priority:** P0
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 10 — ReAct system nudge
 
 - **Description:** System/developer prompt: light Thought → Action → Observation guidance without over-constraining. Decide if mid-loop Thought is shown in the demo or log-only.
 - **Priority:** P1
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 11 — Smoke: tool vs no-tool
 
 - **Description:** Prompt that must use the tool (multi-lap ReAct); prompt that must not (single respond); budget still kills runaway. Checkpoint: Prompt → Loop → Tool → Respond is real.
 - **Priority:** P0
-- **Done:** [ ]
+- **Done:** [x]
 
 ---
 
@@ -107,19 +113,19 @@ Current implementation checkpoint: Tasks 5–8 done; next wire the registry into
 
 - **Description:** Exact prompt(s) for Monday; run twice without touching code.
 - **Priority:** P1
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 13 — Failure / build notes
 
 - **Description:** Capture scars while coding (bad tool shape, missing assistant tool-call on transcript, stop bugs, parallel-tool surprises) — presentation ore.
 - **Priority:** P1
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 14 — Scope freeze
 
 - **Description:** No skills, no second tool, no streaming, no Submit/end_turn control tool, no platform pitch in the binary.
 - **Priority:** P0
-- **Done:** [ ]
+- **Done:** [x]
 
 ---
 
@@ -129,7 +135,7 @@ Current implementation checkpoint: Tasks 5–8 done; next wire the registry into
 
 - **Description:** Reverse-engineer slides from demystify frame + working ReAct demo (“What even are agents?”).
 - **Priority:** P1
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 16 — Rehearse once
 
@@ -153,6 +159,25 @@ Current implementation checkpoint: Tasks 5–8 done; next wire the registry into
 ## Extras backlog (explicitly deferred)
 
 - **Provider HTTP contract test:** use `httptest.Server` to verify the real SDK request shape (`POST /responses`, model, messages) and decode a synthetic assistant `output_text`. Valuable for learning and regression coverage, but not required before the live Task 6 smoke.
+
+### Post-demo Task 9 polish
+
+- Add a happy-path agent regression test that captures prompt snapshots and verifies advertised tool metadata, assistant tool call, call-ID-bound observation, and final response.
+- Add a provider conversion test covering tool name, description, parameters, and strictness.
+- Tighten the budget test to assert the specific budget error instead of accepting any error.
+- Decide and test the one-Action-per-Thought policy: reject multiple calls or intentionally execute them sequentially.
+- Revisit registry ownership (`Registry` value vs pointer) and define the nil/empty-registry invariant.
+- Add per-turn tool selection only if a real dynamic-selection requirement appears.
+- Decide whether tool execution failures terminate the run or return an error observation to the model.
+- Mechanical cleanup: spelling in comments/tests and singular naming for the one-tool conversion helper.
+
+### Post-demo Task 10 polish
+
+- Remove presentation formatting from the agent loop; introduce a small transcript sink/logger boundary so the harness emits lifecycle events and the CLI chooses how to render them.
+- Centralize lifecycle labels, colors, and Lip Gloss styles instead of constructing styles inline on every turn.
+- Render tool arguments consistently (prefer compact JSON over Go map formatting) and normalize message whitespace.
+- Give the ReAct system prompt a clear owner instead of keeping a large raw string inline in `main`.
+- Add focused transcript-rendering tests covering Thought, Action, Observation, Respond, and no-tool turns.
 
 ### From code review (2026-08-02)
 

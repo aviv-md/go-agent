@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agents Under the Hype — דף עזר למרצה</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #101114;
+      --panel: #191b20;
+      --panel-soft: #22252c;
+      --text: #f4f4f2;
+      --muted: #a9acb4;
+      --accent: #78e6d0;
+      --accent-2: #d7ff64;
+      --border: #353943;
+      --danger: #ff9c9c;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 Arial, "Noto Sans Hebrew", ui-sans-serif, system-ui, sans-serif;
+    }
+    header, main, footer { width: min(1100px, calc(100% - 32px)); margin-inline: auto; }
+    header { padding: 64px 0 32px; }
+    h1 { margin: 0 0 8px; font-size: clamp(2rem, 6vw, 4.5rem); line-height: .95; letter-spacing: -.035em; }
+    h2 { margin: 0; font-size: clamp(1.3rem, 3vw, 2rem); line-height: 1.2; }
+    h3 { margin: 0 0 12px; color: var(--accent); }
+    p { margin: 8px 0; }
+    code, pre {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      direction: ltr;
+      text-align: left;
+      unicode-bidi: embed;
+    }
+    code { color: var(--accent-2); }
+    pre {
+      overflow-x: auto;
+      margin: 14px 0;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b0c0f;
+      color: #e9e9e7;
+    }
+    blockquote {
+      margin: 16px 0;
+      padding: 14px 18px;
+      border-inline-start: 4px solid var(--accent);
+      background: var(--panel-soft);
+      font-size: 1.1rem;
+    }
+    .lede { max-width: 760px; color: var(--muted); font-size: 1.1rem; }
+    .north-star {
+      margin-top: 28px;
+      padding: 20px;
+      border: 1px solid var(--accent);
+      border-radius: 14px;
+      background: linear-gradient(225deg, rgba(120,230,208,.12), transparent);
+      font-size: 1.25rem;
+    }
+    .section-title { margin: 48px 0 18px; }
+    .checkpoints {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .checkpoint, .slide, .support {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--panel);
+    }
+    .checkpoint { padding: 14px; }
+    .checkpoint strong { display: block; color: var(--accent-2); font-size: 1.15rem; direction: ltr; text-align: right; }
+    .slides { display: grid; gap: 14px; }
+    .slide { padding: 22px; }
+    .slide-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+    .time { flex: none; color: var(--accent-2); font-weight: 700; direction: ltr; }
+    .label {
+      display: inline-block;
+      min-width: 88px;
+      margin-inline-end: 7px;
+      color: var(--accent);
+      font-weight: 750;
+    }
+    .rescue { color: var(--accent-2); }
+    .support-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+    .support { padding: 20px; }
+    .danger { color: var(--danger); }
+    ul, ol { padding-inline-start: 24px; }
+    footer { padding: 40px 0 72px; color: var(--muted); }
+    @media print {
+      :root { color-scheme: light; --bg: white; --panel: white; --panel-soft: #f5f5f5; --text: #111; --muted: #444; --border: #bbb; }
+      body { font-size: 11pt; }
+      header { padding-top: 0; }
+      .slide, .support { break-inside: avoid; }
+      pre { background: #f5f5f5; color: #111; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Agents Under the Hype</h1>
+    <p class="lede">דף עזר למרצה · סדנת חיזוי באורך 45 דקות. השאר את הדף ליד הטרמינל: זו מפת חילוץ, לא תסריט.</p>
+    <div class="north-star">
+      <strong>כוכב הצפון:</strong> Agent הוא מודל בתוך לולאה, עם כלים וכלל עצירה.<br>
+      אם נתקעת: <em>המודל בוחר את התור הבא. ה־harness מגביל, מבצע, מתצפת ועוצר.</em>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="section-title">נקודות ביקורת בזמן</h2>
+    <div class="checkpoints">
+      <div class="checkpoint"><strong>03:00</strong>ערימת המושגים הסתיימה</div>
+      <div class="checkpoint"><strong>11:00</strong>מודל + harness + כלים הסתיימו</div>
+      <div class="checkpoint"><strong>17:00</strong>ReAct הוסבר</div>
+      <div class="checkpoint"><strong>23:00</strong>סבבי החיזוי הסתיימו</div>
+      <div class="checkpoint"><strong>27:00</strong>הדמו החי הסתיים</div>
+      <div class="checkpoint"><strong>37:00</strong>פירוק הקוד הסתיים</div>
+      <div class="checkpoint"><strong>40:00</strong>הצלקות הסתיימו</div>
+      <div class="checkpoint"><strong>45:00</strong>מסקנה ושאלות הסתיימו</div>
+    </div>
+
+    <h2 class="section-title">הערות מרצה לפי שקף</h2>
+    <div class="slides">
+      <section class="slide">
+        <div class="slide-head"><h2>1 · Agents Under the Hype</h2><span class="time">1:00</span></div>
+        <p><span class="label">מה לומר</span>השפה סביב Agents נשמעת כמעט מיסטית: אוטונומיה, חשיבה, תכנון, זיכרון ואורקסטרציה. מערכות production יכולות להיות מורכבות, אבל הליבה שאי אפשר לצמצם יותר קטנה מספיק כדי להבין אותה היום.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„הליבה קטנה יותר מאוצר המילים שבנינו סביבה.”</p>
+        <p><span class="label">שאלה</span>„מה גרם למשהו להרגיש כמו Agent ולא כמו chatbot?” קח שתי תשובות.</p>
+        <p><span class="label">מעבר</span>„בואו נסיר את התוויות ונמצא את המנגנון.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>2 · ערימת המושגים</h2><span class="time">2:00</span></div>
+        <p><span class="label">מה לומר</span>השוק אורז הרבה יכולות תחת המילה Agent. זיכרון, streaming, תכנון, retrieval ומספר Agents הם שכבות שימושיות, אבל אף אחת מהן לא נחוצה ללולאה העובדת הראשונה שלנו.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„זיכרון, תכנון ואורקסטרציה הם שכבות — לא ליבת הלולאה.”</p>
+        <p><span class="label">מעבר</span>„קודם נפריד בין הדבר שמדבר לבין הדבר שפועל.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>3 · מודל עדיין אינו Agent</h2><span class="time">2:00</span></div>
+        <p><span class="label">מה לומר</span>המודל מקבל context ומציע את התור הבא. ה־harness אחראי על ביצוע, Observations, תקציב ועצירה. המודל לא יכול למדוד חדר; הוא יכול רק לבקש יכולת שתעשה זאת.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„המודל מציע. ה־harness מחליט ומבצע.”</p>
+        <p><span class="label">מעבר</span>„כשמחברים את תחומי האחריות האלה מקבלים את הגדרת העבודה שלנו.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>4 · כל הארכיטקטורה</h2><span class="time">3:00</span></div>
+        <p><span class="label">מה לומר</span>Agent הוא בקירוב מודל ועוד harness. המודל מביא שיקול דעת ושפה. ה־harness הופך אותם להתנהגות מוגבלת ומבוקרת.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„המודל בוחר; ה־harness מגביל.”</p>
+        <p><span class="label">שאלה</span>„מי צריך להחזיק API keys ולבצע side effects בפועל?” נוחתים על ה־harness או קוד הכלי.</p>
+        <p><span class="label">מעבר</span>„אז מה בדיוק המודל מקבל כשכלי זמין לו?”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>5 · חוזה של כלי + handler</h2><span class="time">3:00</span></div>
+        <p><span class="label">מה לומר</span>המודל רואה שם, תיאור ופרמטרים. ה־harness מחזיק את ה־handler הדטרמיניסטי, את הוולידציה ואת התוצאה. כלי הטמפרטורה תמיד מחזיר 72 כי היום אנחנו מלמדים לולאות, לא מטאורולוגיה.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„המודל רואה חוזה; קוד Go רגיל מחזיק את ה־handler.”</p>
+        <p><span class="label">מעבר</span>„Action אחד הוא שימושי. לולאה הופכת אותו להתנהגות.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>6 · כלל העצירה</h2><span class="time">3:00</span></div>
+        <p><span class="label">מה לומר</span>פונים למודל. אם הוא מבקש כלי, מבצעים אותו, מוסיפים את ה־Observation וחוזרים. אם הוא לא מבקש כלי, הטקסט שלו הוא התשובה. תקציב האיטרציות הוא רק מעקה בטיחות.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„אין tool calls? הטקסט של ה־assistant הוא התשובה.”</p>
+        <p><span class="label">שאלה</span>„קיבלנו טקסט מועיל ואפס tool calls — האם פונים שוב?” התשובה היא לא.</p>
+        <p><span class="label">מעבר</span>„עכשיו ניתן שם לכל חלק שאפשר לראות בכל סיבוב.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>7 · ReAct</h2><span class="time">3:00</span></div>
+        <p><span class="label">מה לומר</span><code>Thought</code> הוא סטטוס קצר וגלוי, לא chain-of-thought פרטי. <code>Action</code> הוא tool call מובנה. <code>Observation</code> היא תוצאת הכלי. <code>Respond</code> הוא טקסט סופי ללא tool call.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„ReAct נותן שמות לקצב הגלוי של הלולאה.”</p>
+        <p><span class="label">הפעלה</span>אמור לקהל שמעכשיו הם אחראים לחיזוי השלב הבא.</p>
+        <p><span class="label">מעבר</span>„נתחיל ב־prompt שלא אמור להפעיל שום דבר.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>8 · חיזוי: ללא כלי</h2><span class="time">2:00</span></div>
+        <p><span class="label">מה לומר</span>“How is it going?” לא דורשת עובדה חיצונית. ההתנהגות הנכונה היא <code>Respond</code> אחד ועצירה מיידית.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„זה שכלים זמינים לא אומר שחייבים להשתמש בהם.”</p>
+        <p><span class="label">שאלה</span>„איזה שלב מגיע עכשיו?” נוחתים על <code>Respond</code>.</p>
+        <p><span class="label">מעבר</span>„עכשיו נשאל משהו שהמודל לא יכול לדעת בעצמו.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>9 · חיזוי: מסלול עם כלי</h2><span class="time">4:00</span></div>
+        <p><span class="label">מה לומר</span>חשוף שורה בכל פעם. המודל מודיע שיבדוק, מבקש <code>room_temperature</code>, מקבל 72 מעלות מקוד Go ואז עונה בלי tool call נוסף.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„המודל מדבר, ה־harness פועל, המודל רואה את התוצאה וה־harness עוצר.”</p>
+        <p><span class="label">שאל</span>האם הוא יכול לענות בכנות? איזה כלי? מי מייצר Observation? ממשיכים או עוצרים?</p>
+        <p><span class="label">מעבר</span>„הרגע חזיתם את כל הריצה. בואו נראה אם המכונה מסכימה.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>10 · דמו חי</h2><span class="time">4:00</span></div>
+        <p><span class="label">מה לומר</span>שימו לב לבחירת הכלי, פרמטר החדר, ה־Observation והעצירה. אל תקריין לפני הטרמינל — תן לקהל לקרוא מה צפוי להגיע.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„אנחנו בודקים את המודל המנטלי, לא מנסים להפתיע את עצמנו.”</p>
+        <p><span class="label">בצע</span>הרץ את ה־prompt המדויק של חדר השינה. הרץ no-tool רק אם יש מספיק זמן.</p>
+        <p><span class="label">מעבר</span>„הפלט הזה אינו קישוט; הוא trace ארכיטקטוני.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>11 · פירוק ה־transcript</h2><span class="time">3:00</span></div>
+        <p><span class="label">מה לומר</span>האחריות מתחלפת. המודל מייצר Thought ו־Action. ה־harness מבצע ומספק Observation. המודל מייצר Respond. ה־harness מזהה שאין tool calls ועוצר.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„ה־transcript מחליף בעלות בין המודל ל־harness.”</p>
+        <p><span class="label">שאלה</span>הצבע על כל שורה ובקש מהקהל לומר „מודל” או „harness”.</p>
+        <p><span class="label">מעבר</span>„עכשיו נמפה את ה־trace הזה לגבולות הקוד הקטנים ביותר.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>12 · קוד: הגבול</h2><span class="time">3:00</span></div>
+        <p><span class="label">מה לומר</span>הודעות וכלים זמינים נכנסים ל־<code>Prompt</code>; תור אחד של assistant יוצא. ה־provider רק מתרגם טיפוסים ניטרליים לטיפוסים של ה־SDK.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„הודעות וכלים נכנסים; תור אחד של assistant יוצא.”</p>
+        <p><span class="label">הדגש</span>קוד ה־Agent לא מכיר טיפוסים של OpenAI SDK; ה־handlers לא מכירים את ה־provider.</p>
+        <p><span class="label">מעבר</span>„עכשיו נראה את הלולאה שמשתמשת בגבול הקטן הזה.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>13 · קוד: כל הטריק</h2><span class="time">4:00</span></div>
+        <p><span class="label">מה לומר</span>פונים למודל, מוסיפים את תור ה־assistant, עוצרים אם אין tool calls; אחרת מבצעים, קושרים את ה־Observation ל־call ID, מוסיפים וחוזרים.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„Prompt, append, stop or execute, append observation, repeat.”</p>
+        <p><span class="label">שאלה</span>„איפה נמצאת האוטונומיה?” המודל בוחר את התור הבא בתוך גבולות שה־harness אוכף.</p>
+        <p><span class="label">מעבר</span>„המנגנון קטן. זה לא אומר שאין בו באגים.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>14 · הצלקות</h2><span class="time">3:00</span></div>
+        <p><span class="label">מה לומר</span>הכשלים היו באגים רגילים בגבולות: תיאורים חסרים, היפוך call ID ותוכן, registries ריקים, assertions חלשים וקוד תצוגה שדלף ללולאה. Skills, זיכרון, streaming ו־multi-agent הוצאו בכוונה.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„רוב הבאגים היו באגים בגבולות, לא באינטליגנציה.”</p>
+        <p><span class="label">מעבר</span>„היכולות המתקדמות עדיין חשובות — עכשיו אנחנו יודעים סביב מה הן בנויות.”</p>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><h2>15 · מסקנה ושאלות</h2><span class="time">5:00</span></div>
+        <p><span class="label">מה לומר</span>Agent הוא תוכנה מוכרת שמעבירה למודל את שיקול הדעת לגבי התור הבא. המודל בוחר. ה־harness מגביל. כלים פועלים. Observations מקרקעות. כלל העצירה מסיים.</p>
+        <p class="rescue"><span class="label">אם נתקעת</span>„Agents די פשוטים מתחת להייפ.”</p>
+        <p><span class="label">שאלה</span>„איזו שכבת production הייתם מוסיפים קודם — ואיזו דרישה קונקרטית מצדיקה אותה?”</p>
+      </section>
+    </div>
+
+    <h2 class="section-title">הנקודות שאליהן רוצים להגיע</h2>
+    <div class="support-grid">
+      <section class="support"><h3>Agent מול chatbot?</h3><p>הוא יכול לבחור פעולות בתוך לולאה שמנוהלת על ידי harness.</p></section>
+      <section class="support"><h3>מי מחזיק API keys?</h3><p>ה־harness או מימוש הכלי — לא המודל.</p></section>
+      <section class="support"><h3>טקסט מועיל, אפס calls?</h3><p>עוצרים. הטקסט הוא התשובה הסופית.</p></section>
+      <section class="support"><h3>מי מייצר Observation?</h3><p>ה־harness מריץ קוד רגיל; המודל ביקש את ה־Action.</p></section>
+      <section class="support"><h3>איפה האוטונומיה?</h3><p>המודל בוחר את התור הבא בתוך גבולות ה־harness.</p></section>
+    </div>
+
+    <h2 class="section-title">כרטיס דמו</h2>
+    <section class="support">
+      <h3>פקודה</h3>
+      <pre><code>go run ./cmd/main/main.go</code></pre>
+      <h3>ה־prompt המדויק</h3>
+      <pre><code>Do you know the temprature in my bedroom?</code></pre>
+      <h3>מחזור החיים הצפוי</h3>
+      <pre><code>[Thought] I'll check the temperature in your bedroom for you.
+[Action] room_temperature map[room:bedroom]
+[Observation] The temperature in bedroom is 72 degrees
+[Respond] The temperature in your bedroom is currently 72 degrees Fahrenheit.</code></pre>
+      <h3>מסלול ללא כלי</h3>
+      <pre><code>How is it going?</code></pre>
+      <p>צפוי: <code>Respond</code> אחד, ללא Thought, Action או Observation.</p>
+    </section>
+
+    <h2 class="section-title">חילוץ</h2>
+    <div class="support-grid">
+      <section class="support">
+        <h3 class="danger">אם הדמו החי נכשל</h3>
+        <blockquote>ה־provider או הרשת נכשלו; הארכיטקטורה לא הפכה למסתורית. בואו נבחן את ה־transcript האחרון שאימתנו.</blockquote>
+        <ol><li>הצג את ה־transcript הסטטי.</li><li>המשך לשקף 11.</li><li>אל תדבג מול הקהל.</li></ol>
+      </section>
+      <section class="support">
+        <h3>אם איבדת את המקום</h3>
+        <ul>
+          <li>מי אחראי לשורה הזאת — המודל או ה־harness?</li>
+          <li>מה אמור לקרות עכשיו?</li>
+          <li>מה גורם ללולאה לעצור?</li>
+          <li>איזה גבול תוכנתי רגיל איפשר את זה?</li>
+          <li>בואו נחזור לארבעת שלבי מחזור החיים.</li>
+        </ul>
+      </section>
+      <section class="support">
+        <h3>אם חסר זמן</h3>
+        <ol>
+          <li>דלג על הרצת ה־no-tool השנייה.</li>
+          <li>הצג רק את ממשק <code>Model</code> בשקף 12.</li>
+          <li>קח חיזוי אחד במקום את כל הארבעה.</li>
+          <li>קצר את הצלקות ל־description, call ID ו־error לא נכון.</li>
+        </ol>
+        <p><strong>לעולם אל תחתוך:</strong> כלל העצירה, הדמו או ה־fallback, והתזה הסופית.</p>
+      </section>
+      <section class="support">
+        <h3>שאלות צד שכדאי להחנות</h3>
+        <blockquote>זו שאלה טובה ל־production; היא מחוץ ללולאה המינימלית של היום בכוונה.</blockquote>
+        <p>זיכרון · Skills · Streaming · כלים מקביליים · Multi-agent orchestration · Production logging</p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <blockquote>Agent אינו סוג חדש של תוכנה. זו תוכנה מוכרת שמעבירה למודל את שיקול הדעת לגבי התור הבא.</blockquote>
+    <p>שאלה אחרונה: איזו שכבת production הייתם מוסיפים קודם — ואיזו דרישה קונקרטית מצדיקה אותה?</p>
+  </footer>
+</body>
+</html>

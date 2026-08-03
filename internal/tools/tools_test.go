@@ -8,7 +8,7 @@ import (
 func TestToolCreationAndRun(t *testing.T) {
 
 	tool := NewRoomTemperatureTool()
-	schema := map[string]any{
+	parameters := map[string]any{
 		"type": "object",
 		"properties": map[string]any{
 			"room": map[string]any{
@@ -27,8 +27,8 @@ func TestToolCreationAndRun(t *testing.T) {
 		t.Errorf("Expected 'The temperature in kitchen is 72 degrees', got '%s'", res)
 	}
 
-	eq := reflect.DeepEqual(schema, tool.Schema())
+	eq := reflect.DeepEqual(parameters, tool.Parameters())
 	if !eq {
-		t.Fatalf("Expected schema to be equal, got %v", tool.schema)
+		t.Fatalf("Expected parameters to be equal, got %v", tool.parameters)
 	}
 }

@@ -39,11 +39,11 @@ func TestListTools(t *testing.T) {
 
 	tName := "test_tool"
 	tDesc := "Test tool"
-	tSchema := map[string]any{
+	tParameters := map[string]any{
 		"type": "object",
 	}
 
-	trt := NewTool(tName, tDesc, tSchema, tFn)
+	trt := NewTool(tName, tDesc, tParameters, tFn)
 
 	reg.Register(trt)
 

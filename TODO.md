@@ -19,7 +19,13 @@ Weekend goal: working demo complete, then presentation. Hand-code for recall; no
 | `internal/skill` | Does not exist |
 | OpenAI provider | Done for text + tools — maps messages and tool definitions/calls/results; live OpenRouter tool turn passed |
 
-Current implementation checkpoint: Tasks 5–10 done; next smoke the tool and no-tool paths.
+Current checkpoint: Tasks 5–15 done; the demo is frozen and the 45-minute workshop deck is drafted. One human cold rehearsal remains.
+
+Presentation artifacts:
+
+- `docs/presentation.md` — canonical workshop outline.
+- `docs/speaker-cheatsheet.md` / `docs/speaker-cheatsheet.he.md` — English and Hebrew speaker notes.
+- `docs/speaker-cheatsheet.en.html` / `docs/speaker-cheatsheet.he.html` — standalone browser/print versions.
 
 ---
 
@@ -97,7 +103,7 @@ Current implementation checkpoint: Tasks 5–10 done; next smoke the tool and no
 
 - **Description:** Prompt that must use the tool (multi-lap ReAct); prompt that must not (single respond); budget still kills runaway. Checkpoint: Prompt → Loop → Tool → Respond is real.
 - **Priority:** P0
-- **Done:** [ ]
+- **Done:** [x]
 
 ---
 
@@ -107,19 +113,19 @@ Current implementation checkpoint: Tasks 5–10 done; next smoke the tool and no
 
 - **Description:** Exact prompt(s) for Monday; run twice without touching code.
 - **Priority:** P1
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 13 — Failure / build notes
 
 - **Description:** Capture scars while coding (bad tool shape, missing assistant tool-call on transcript, stop bugs, parallel-tool surprises) — presentation ore.
 - **Priority:** P1
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 14 — Scope freeze
 
 - **Description:** No skills, no second tool, no streaming, no Submit/end_turn control tool, no platform pitch in the binary.
 - **Priority:** P0
-- **Done:** [ ]
+- **Done:** [x]
 
 ---
 
@@ -129,7 +135,7 @@ Current implementation checkpoint: Tasks 5–10 done; next smoke the tool and no
 
 - **Description:** Reverse-engineer slides from demystify frame + working ReAct demo (“What even are agents?”).
 - **Priority:** P1
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Task 16 — Rehearse once
 

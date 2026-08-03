@@ -4,6 +4,9 @@ One-line pointers for future sessions. Newest first.
 
 | Date | Milestone |
 |------|-----------|
+| 2026-08-03 | Speaker materials packaged: indexed English/Hebrew Markdown and standalone HTML cheatsheets |
+| 2026-08-03 | Tasks 13–15 done: demo frozen; 15-slide predictive workshop drafted and timing-checked |
+| 2026-08-03 | Tasks 11–12 done: no-tool smoke passed; exact tool lifecycle passed twice untouched |
 | 2026-08-03 | Task 10 logging cleanup deferred: transcript boundary, centralized styling, rendering tests |
 | 2026-08-03 | Task 10 done: colored visible Thought → Action → Observation → Respond lifecycle |
 | 2026-08-03 | All remaining Task 9 concerns moved to post-demo polish; none block the demo |
